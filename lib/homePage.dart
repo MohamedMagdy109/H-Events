@@ -14,21 +14,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:HEvent/pages/suggest.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
-
 class HomePage extends StatefulWidget {
-  
- FirebaseUser user;
- HomePage({this.user});
+  FirebaseUser user;
+  HomePage({this.user});
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-
-
   //     Future<List<DocumentSnapshot>> getSeedID() async{
   //        var firestore = Firestore.instance;
   //   var data = await firestore.collection('Events').getDocuments();
@@ -43,18 +37,17 @@ class _HomePageState extends State<HomePage>
   //   return productList;
   // }
 
-
   var selectedItem = 0;
 
   List children = [
     DashboardPage(),
     DashboardPage(),
     DashboardPage(),
-  //  DashboardPage()
+    //  DashboardPage()
     Interests(),
   ];
 
-    FirebaseUser user;
+  FirebaseUser user;
   Future<void> getUser() async {
     FirebaseUser userData = await FirebaseAuth.instance.currentUser();
     setState(() {
@@ -65,181 +58,178 @@ class _HomePageState extends State<HomePage>
 
   /////////////////////////////////get intrestes
 
-
   Future getintrestesdata() async {
-  var data = await Firestore.instance.collection('user').document(user.uid).get();
-  
-  SharedPreferences p;
-  p = await SharedPreferences.getInstance();
-  setState(() {
-     p.setString('Interests', data['Interests'][0]);
-    
-    });
-     print(data['Interests'][0]);
-     print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-  }
+    var data =
+        await Firestore.instance.collection('user').document(user.uid).get();
 
+    SharedPreferences p;
+    p = await SharedPreferences.getInstance();
+    setState(() {
+      p.setString('Interests', data['Interests'][0]);
+    });
+    print(data['Interests'][0]);
+    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+  }
 
 //////////////////////////////////////////////////////////////في sigin in 0-1
 
   @override
   void initState() {
     super.initState();
-   // getUser();
+    // getUser();
     //page();
     getUser();
     //getintrestesdata();
   }
 
- Future _data;
-  Future<void> page(var i){
-     switch (selectedItem) {
-    case 1:
-      //child = FlutterLogo();
-      Interests();
-      break;
-    case 2:
-      //child = FlutterLogo(colors: Colors.orange);
-      speaker();
-      break;
-    case 3:
-      //child = FlutterLogo(colors: Colors.red);
-      eventName2();
-      break;
+  Future _data;
+  Future<void> page(var i) {
+    switch (selectedItem) {
+      case 1:
+        //child = FlutterLogo();
+        Interests();
+        break;
+      case 2:
+        //child = FlutterLogo(colors: Colors.orange);
+        speaker();
+        break;
+      case 3:
+        //child = FlutterLogo(colors: Colors.red);
+        eventName2();
+        break;
+    }
   }
-  }
-  
 
   //get floatingActionButton => null;
   @override
   Widget build(BuildContext context) {
-
-   Widget child;
-  switch (selectedItem) {
-    case 1:
-      child = FlutterLogo();
-      break;
-    case 2:
-      child = FlutterLogo(colors: Colors.orange);
-      break;
-    case 3:
-      child = FlutterLogo(colors: Colors.red);
-      break;
-  }
+    Widget child;
+    // switch (selectedItem) {
+    //   case 1:
+    //     child = FlutterLogo();
+    //     break;
+    //   case 2:
+    //     child = FlutterLogo(colors: Colors.orange);
+    //     break;
+    //   case 3:
+    //     child = FlutterLogo(colors: Colors.red);
+    //     break;
+    // }
 
     return Scaffold(
-     // backgroundColor: Color(0xFF202020),
+      // backgroundColor: Color(0xFF202020),
       //body: children[selectedItem],
-      body:Column(
-      children: <Widget>[
-        SizedBox(height: 20.0),
-        Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                InkWell(
-                     onTap: ()async{
-                    await FirebaseAuth.instance.signOut();
-                     Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LoginPage()));
-                     },
-                      child: Container(
-                      height: 40.0,
-                      width: 40.0,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7.0),
-                          color: Color(0xFFFD4F99)),
-                      child: Center(
-                          child: Icon(Icons.exit_to_app, color: Colors.white))),
-                ),
-                Text('HOME',
-                    style: GoogleFonts.montserrat(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                        textStyle: TextStyle(color: Colors.black))),
-                Container(
-                  height: 40.0,
-                  width: 40.0,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7.0),
-                      color: Color(0xFF353535)),
-                  child: Center(
-                    child: InkWell(
-                      onTap: (){
-
-                      
-                        getintrestesdata();
-
-                        Navigator.of(context)
-                            .push(new MaterialPageRoute(builder: (context) {
-                          return new suggest();
-                        }));
-                      },
-                      child: Icon(Icons.format_list_bulleted, color: Colors.white)
-                      ),
+      body: Column(
+        children: <Widget>[
+          SizedBox(height: 20.0),
+          Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () async {
+                      await FirebaseAuth.instance.signOut();
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    },
+                    child: Container(
+                        height: 40.0,
+                        width: 40.0,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7.0),
+                            color: Color(0xFFFD4F99)),
+                        child: Center(
+                            child:
+                                Icon(Icons.exit_to_app, color: Colors.white))),
                   ),
-                )
-              ],
-            )),
-        SizedBox(height: 10.0),
-        Container(
-          height: MediaQuery.of(context).size.height - 156.0,
-          child:   StreamBuilder<QuerySnapshot>(
-        stream: 
+                  Text('HOME',
+                      style: GoogleFonts.montserrat(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                          textStyle: TextStyle(color: Colors.black))),
+                  Container(
+                    height: 40.0,
+                    width: 40.0,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(7.0),
+                        color: Color(0xFF353535)),
+                    child: Center(
+                      child: InkWell(
+                          onTap: () {
+                            getintrestesdata();
 
-        Firestore.instance.collection("tracks").snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-           if (!snapshot.hasData) return Center(child: Text('loading aata ...Please Wait'),);
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return new Text('Loading...');
-            default:
-              return new ListView(
-                children: snapshot.data.documents.map((DocumentSnapshot document) {
-                  return  Container(
-            
-           // child: ListView(
-           //   children: <Widget>[
-            child:    _buildListItem(document['image'], document['track'],
-                    document['info']),
-                // _buildListItem('assets/marketing.jpg', 'Marketing',
-                //     '110 topics - 1k articles'),
-                // _buildListItem('assets/Discovering.jpg', 'Discovering',/////////
-                //     '56 topics - 2k articles'),
+                            Navigator.of(context)
+                                .push(new MaterialPageRoute(builder: (context) {
+                              return new suggest();
+                            }));
+                          },
+                          child: Icon(Icons.format_list_bulleted,
+                              color: Colors.white)),
+                    ),
+                  )
+                ],
+              )),
+          SizedBox(height: 10.0),
+          Container(
+            height: MediaQuery.of(context).size.height - 156.0,
+            child: StreamBuilder<QuerySnapshot>(
+              stream: Firestore.instance.collection("tracks").snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError)
+                  return new Text('Error: ${snapshot.error}');
+                if (!snapshot.hasData)
+                  return Center(
+                    child: Text('loading aata ...Please Wait'),
+                  );
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return new Text('Loading...');
+                  default:
+                    return new ListView(
+                      children: snapshot.data.documents
+                          .map((DocumentSnapshot document) {
+                        return Container(
+                          // child: ListView(
+                          //   children: <Widget>[
+                          child: _buildListItem(document['image'],
+                              document['track'], document['info']),
+                          // _buildListItem('assets/marketing.jpg', 'Marketing',
+                          //     '110 topics - 1k articles'),
+                          // _buildListItem('assets/Discovering.jpg', 'Discovering',/////////
+                          //     '56 topics - 2k articles'),
 
-         //     ],
-       //     ),
-            
-            //  Align(
-            //   alignment: Alignment.bottomRight,
-            // ),
-          );
-                  
-                   
-                }).toList(),
-              );
-          }
-        },
-      ),
-        ),
-      
-  
-       
-      ],
-    ),
-    floatingActionButton: FloatingActionButton( ////////////////
-        onPressed: (){
-                Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => eventName()),
-                );
+                          //     ],
+                          //     ),
+
+                          //  Align(
+                          //   alignment: Alignment.bottomRight,
+                          // ),
+                        );
+                      }).toList(),
+                    );
+                }
               },
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        ////////////////
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => eventName()),
+          );
+        },
         tooltip: 'Create Event',
-        child: Icon(Icons.add,color: Color(0xFFFD4F99),),
+        child: Icon(
+          Icons.add,
+          color: Color(0xFFFD4F99),
+        ),
         backgroundColor: Colors.black,
       ),
-
 
       // bottomNavigationBar: BottomNavigationBar(
       //   backgroundColor: Color(0xFF1B1B1B),//////////////
@@ -256,7 +246,7 @@ class _HomePageState extends State<HomePage>
       //   },
       //   items: [
       //     BottomNavigationBarItem(
-            
+
       //       backgroundColor: Color(0xFF1B1B1B),
       //       icon: Icon(Icons.home),
       //       title: Container(
@@ -264,7 +254,7 @@ class _HomePageState extends State<HomePage>
       //         width: 5.0,
       //         decoration: BoxDecoration(
       //           shape: BoxShape.circle,
-      //           color: Color(0xFFFD4F99) 
+      //           color: Color(0xFFFD4F99)
       //         ),
       //       )
       //     ),
@@ -276,7 +266,7 @@ class _HomePageState extends State<HomePage>
       //         width: 5.0,
       //         decoration: BoxDecoration(
       //           shape: BoxShape.circle,
-      //           color: Color(0xFFFD4F99) 
+      //           color: Color(0xFFFD4F99)
       //         ),
       //       ),
       //     ),
@@ -288,7 +278,7 @@ class _HomePageState extends State<HomePage>
       //         width: 5.0,
       //         decoration: BoxDecoration(
       //           shape: BoxShape.circle,
-      //           color: Color(0xFFFD4F99) 
+      //           color: Color(0xFFFD4F99)
       //         ),
       //       )
       //     ),
@@ -300,7 +290,7 @@ class _HomePageState extends State<HomePage>
       //         width: 5.0,
       //         decoration: BoxDecoration(
       //           shape: BoxShape.circle,
-      //           color: Color(0xFFFD4F99) 
+      //           color: Color(0xFFFD4F99)
       //         ),
       //       )
       //     ),
@@ -312,15 +302,17 @@ class _HomePageState extends State<HomePage>
       //         width: 5.0,
       //         decoration: BoxDecoration(
       //           shape: BoxShape.circle,
-      //           color: Color(0xFFFD4F99) 
+      //           color: Color(0xFFFD4F99)
       //         ),
       //       )
-      //     )         
+      //     )
       //   ],
       // ),
     );
   }
-  _buildListItem(String imgPath, String category, String description) {///////////
+
+  _buildListItem(String imgPath, String category, String description) {
+    ///////////
     return Padding(
         padding: EdgeInsets.all(15.0),
         child: Stack(
@@ -334,7 +326,9 @@ class _HomePageState extends State<HomePage>
                       image: NetworkImage(imgPath),
                       fit: BoxFit.cover,
                       colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.6), BlendMode.darken))),///opacity //
+                          Colors.black.withOpacity(0.6), BlendMode.darken))),
+
+              ///opacity //
             ),
             Container(
                 height: 300.0,
@@ -363,12 +357,13 @@ class _HomePageState extends State<HomePage>
                           // MaterialPageRoute(builder: (context) => explore()),
                           // );
                           /////////////
-                            Navigator.of(context).push(
-                            new MaterialPageRoute(builder: (context){
-                            return new explore(type: category,);
-                           })
-                           );
-                           },
+                          Navigator.of(context)
+                              .push(new MaterialPageRoute(builder: (context) {
+                            return new explore(
+                              type: category,
+                            );
+                          }));
+                        },
                         child: Container(
                             height: 50.0,
                             width: 125.0,
@@ -388,6 +383,3 @@ class _HomePageState extends State<HomePage>
         ));
   }
 }
-
-
-

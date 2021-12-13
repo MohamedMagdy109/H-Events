@@ -537,8 +537,7 @@ final List<DropdownMenuItem<String>> _dropDownSoft_Skills = Soft_Skills
     
     switch(
       await showDialog(
-        context: context,
-        child: new SimpleDialog(
+        builder: (context) => new SimpleDialog(
           title: new Text("Event created succecfully"),
           children: <Widget>[
             new SimpleDialogOption(
@@ -549,7 +548,7 @@ final List<DropdownMenuItem<String>> _dropDownSoft_Skills = Soft_Skills
             ),
            
           ],
-        )
+        ), context: context
       )
     ) {
       case Answers.Close:

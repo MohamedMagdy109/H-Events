@@ -1,5 +1,3 @@
-
-
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,10 +12,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toast/toast.dart';
 
 class moreExplore extends StatefulWidget {
+  int capacity;
   String title,
       photo,
       address,
-      capacity,
       place,
       desciption,
       date,
@@ -25,36 +23,37 @@ class moreExplore extends StatefulWidget {
       docID,
       speaker,
       userID,
-       owner ;
+      owner;
   bool favo, join;
   var color;
   String stat;
-  moreExplore({
-    this.photo,
-    this.title,
-    this.address,
-    this.capacity,
-    this.desciption,
-    this.place,
-    this.date,
-    this.status,
-    this.docID,
-    this.favo,
-    this.join,
-    this.color,
-    this.userID,
-    this.stat,
-    this.speaker,
-    this.owner
-  });
+  moreExplore(
+      {this.photo,
+      this.title,
+      this.address,
+      this.capacity,
+      this.desciption,
+      this.place,
+      this.date,
+      this.status,
+      this.docID,
+      this.favo,
+      this.join,
+      this.color,
+      this.userID,
+      this.stat,
+      this.speaker,
+      this.owner});
   @override
   _moreExploreState createState() => _moreExploreState();
 }
-enum Answers{Close}
+
+enum Answers { Close }
+
 class _moreExploreState extends State<moreExplore> {
   static final String path = "lib/src/pages/bike/bike_details.dart";
   final TextStyle bold = TextStyle(fontWeight: FontWeight.bold);
-  
+
   FirebaseUser user;
   Future<void> getUser() async {
     FirebaseUser userData = await FirebaseAuth.instance.currentUser();
@@ -63,13 +62,15 @@ class _moreExploreState extends State<moreExplore> {
       print(user.uid);
     });
   }
- ////////////////////////////////////////////////////////////////////////////favorite
+
+  ////////////////////////////////////////////////////////////////////////////favorite
   bool fav;
   var my_color_variable;
-  String id,duID;
-  
+  String id, duID;
+
   f() async {
-     var data = await Firestore.instance.collection('favorite').document(duID).get();
+    var data =
+        await Firestore.instance.collection('favorite').document(duID).get();
 
     if (data.exists) {
       setState(() {
@@ -83,8 +84,7 @@ class _moreExploreState extends State<moreExplore> {
       });
     }
   }
-  
-  
+
   favorite() {
     if (fav == false) {
       Firestore.instance.collection('favorite').document(duID).setData({
@@ -94,7 +94,7 @@ class _moreExploreState extends State<moreExplore> {
         'capacity': widget.capacity,
         'description': widget.desciption,
         'date': widget.date,
-       // 'status': widget.status,
+        // 'status': widget.status,
         'place': widget.place,
         'user': user.uid,
         'eventID': widget.docID,
@@ -116,95 +116,80 @@ class _moreExploreState extends State<moreExplore> {
       });
     }
   }
- //////////////////////////////////////////////////////////////////////////////////
- ///
- //////////////////////////////////////////////////////////////////////////////////join event
+
+  //////////////////////////////////////////////////////////////////////////////////
+  ///
+  //////////////////////////////////////////////////////////////////////////////////join event
   bool join;
-  var my_color_variable_join=Colors.green;
-  var join_text=Text("join now");
+  var my_color_variable_join = Colors.green;
+  var join_text = Text("join now");
   //String id,duID;
   var join_icon = Icon(Icons.add);
   j() async {
-     var data = await Firestore.instance.collection('join_event').document(duID).get();
+    var data =
+        await Firestore.instance.collection('join_event').document(duID).get();
 
     if (data.exists) {
       setState(() {
         my_color_variable_join = Colors.red;
         join = true;
-        join_text=Text("cancel");
-        join_icon= Icon(Icons.delete_forever);
+        join_text = Text("cancel");
+        join_icon = Icon(Icons.delete_forever);
       });
     } else {
       setState(() {
         my_color_variable_join = Colors.green;
         join = false;
-        join_text=Text("join now");
-        join_icon= Icon(Icons.add);
+        join_text = Text("join now");
+        join_icon = Icon(Icons.add);
       });
     }
   }
-  
-  
-
-
 
   String _value = '';
 
   void _setValue(String value) => setState(() => _value = value);
 
   Future _askUser() async {
-    
-    switch(
-      await showDialog(
-        context: context,
-        child: new SimpleDialog(
-          title: new Text("Join requested succecfully"),
-          children: <Widget>[
-            new SimpleDialogOption(
-              child: new Text("Close"),
-              onPressed: (){
-                Navigator.pop(context, Answers.Close);
-              },
+    switch (await showDialog(
+        builder: (context) => new SimpleDialog(
+              title: new Text("Join requested succecfully"),
+              children: <Widget>[
+                new SimpleDialogOption(
+                  child: new Text("Close"),
+                  onPressed: () {
+                    Navigator.pop(context, Answers.Close);
+                  },
+                ),
+              ],
             ),
-           
-          ],
-        )
-      )
-    ) {
+        context: context)) {
       case Answers.Close:
         _setValue('ok');
         break;
-    
     }
   }
+
   Future _askUserno() async {
-    
-    switch(
-      await showDialog(
-        context: context,
-        child: new SimpleDialog(
-          title: new Text("Join cancled succecfully"),
-          children: <Widget>[
-            new SimpleDialogOption(
-              child: new Text("Close"),
-              onPressed: (){
-                Navigator.pop(context, Answers.Close);
-              },
+    switch (await showDialog(
+        builder: (context) => new SimpleDialog(
+              title: new Text("Join cancled succecfully"),
+              children: <Widget>[
+                new SimpleDialogOption(
+                  child: new Text("Close"),
+                  onPressed: () {
+                    Navigator.pop(context, Answers.Close);
+                  },
+                ),
+              ],
             ),
-           
-          ],
-        )
-      )
-    ) {
+        context: context)) {
       case Answers.Close:
         _setValue('ok');
         break;
-    
     }
   }
-  
-  
-  
+
   join_event() {
     if (join == false) {
       Firestore.instance.collection('join_event').document(duID).setData({
@@ -219,49 +204,48 @@ class _moreExploreState extends State<moreExplore> {
         'user': user.uid,
         'eventID': widget.docID,
       });
-     /* Toast.show("added", context,
+      /* Toast.show("added", context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);*/
-          _askUser();
+      _askUser();
       setState(() {
         join = true;
         my_color_variable_join = Colors.red;
-        join_text=Text("cancel");
-        join_icon= Icon(Icons.delete_forever);
+        join_text = Text("cancel");
+        join_icon = Icon(Icons.delete_forever);
       });
     } else {
       Firestore.instance.collection("join_event").document(duID).delete();
-           _askUserno();
-      
+      _askUserno();
+
       setState(() {
         join = false;
         my_color_variable_join = Colors.green;
-        join_text=Text("join now");
-        join_icon= Icon(Icons.add);
+        join_text = Text("join now");
+        join_icon = Icon(Icons.add);
       });
     }
   }
+
 //////////////////////////////////////////////////////////////////////////////////
   @override
- initState() {
+  initState() {
     super.initState();
     getUser();
     print(widget.docID);
-    duID= widget.docID+widget.userID;
+    duID = widget.docID + widget.userID;
     f();
-    if(widget.favo == true){
-    j();
-    }else{
+    if (widget.favo == true) {
+      j();
+    } else {
       setState(() {
-       // join = false;
+        // join = false;
         my_color_variable_join = Colors.red;
-        join_text=Text("not avalible");
-        join_icon= Icon(Icons.not_interested);
+        join_text = Text("not avalible");
+        join_icon = Icon(Icons.not_interested);
       });
     }
     print(widget.stat);
-    
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -341,7 +325,7 @@ class _moreExploreState extends State<moreExplore> {
                           children: <Widget>[
                             SpecsBlock(
                               label: "Capacity",
-                              value: widget.capacity,
+                              value: widget.capacity.toString(),
                               icon: Icon(
                                 Icons.apps,
                               ),
@@ -483,7 +467,7 @@ class _moreExploreState extends State<moreExplore> {
                             Container(
                               width: 100,
                               child: Text(
-                                widget.capacity,
+                                widget.capacity.toString(),
                                 style: bold,
                                 textAlign: TextAlign.left,
                                 //softWrap: true,
@@ -630,8 +614,8 @@ class _moreExploreState extends State<moreExplore> {
               icon: join_icon,
               label: join_text,
               onPressed: () {
-                if(widget.favo == true){
-                join_event();
+                if (widget.favo == true) {
+                  join_event();
                 }
               },
             ),

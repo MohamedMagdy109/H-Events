@@ -1,4 +1,3 @@
-
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,29 +14,21 @@ import 'package:toast/toast.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class searchPlaceInfo extends StatefulWidget {
-  String title,
-      photo,
-      address,
-      capacity,
-      desciption,
-      docID,
-      userID,
-      price;
-      List<dynamic> images= [];
-  
+  String title, photo, address, capacity, desciption, docID, userID, price;
+  List<dynamic> images = [];
+
   String stat;
-  searchPlaceInfo({
-    this.photo,
-    this.title,
-    this.address,
-    this.capacity,
-    this.desciption,
-    this.docID,
-    this.userID,
-    this.stat,
-    this.images,
-    this.price
-  });
+  searchPlaceInfo(
+      {this.photo,
+      this.title,
+      this.address,
+      this.capacity,
+      this.desciption,
+      this.docID,
+      this.userID,
+      this.stat,
+      this.images,
+      this.price});
   @override
   _searchPlaceInfoState createState() => _searchPlaceInfoState();
 }
@@ -56,26 +47,25 @@ class _searchPlaceInfoState extends State<searchPlaceInfo> {
   }
 
   @override
- initState() {
+  initState() {
     super.initState();
     print(widget.images[0]);
     print(widget.images[1]);
-    
-    
   }
-  
-  Choose() async {
-    
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  
-  await prefs.setString('place', widget.title);
-  await prefs.setString('owner', widget.userID);
-  await prefs.setString('address', widget.address);
-  print(widget.title);
-  Toast.show("Done", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
-  Navigator.pop(context,);
-}
 
+  Choose() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('place', widget.title);
+    await prefs.setString('owner', widget.userID);
+    await prefs.setString('address', widget.address);
+    print(widget.title);
+    Toast.show("Done", context,
+        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Navigator.pop(
+      context,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,28 +91,27 @@ class _searchPlaceInfoState extends State<searchPlaceInfo> {
                       //   bike,
                       //   fit: BoxFit.cover,
                       // )
-                      child:     Container(
-            //  height: 300,
-            //  color: Colors.grey.shade800,
-             // padding: EdgeInsets.all(16.0),
-              child: Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  return ClipRRect(
-                  //  borderRadius: BorderRadius.circular(10.0),
-                    child: Image.network(
-                      widget.images[index],
-                      fit: BoxFit.cover,
+                      child: Container(
+                        //  height: 300,
+                        //  color: Colors.grey.shade800,
+                        // padding: EdgeInsets.all(16.0),
+                        child: Swiper(
+                          itemBuilder: (BuildContext context, int index) {
+                            return ClipRRect(
+                              //  borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                widget.images[index],
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          },
+                          itemCount: 3,
+                          //viewportFraction: 0.8,
+                          scale: 0.9,
+                          pagination: SwiperPagination(),
+                        ),
+                      ),
                     ),
-                  );
-                },
-                itemCount: 3,
-                //viewportFraction: 0.8,
-                scale: 0.9,
-                pagination: SwiperPagination(),
-              ),
-            ),
-                    ),
-                    
                   ],
                 ),
                 Padding(
@@ -148,7 +137,6 @@ class _searchPlaceInfoState extends State<searchPlaceInfo> {
                                 Icons.apps,
                               ),
                             ),
-                            
                             SpecsBlock(
                               label: "status",
                               value: "avalible",
@@ -160,7 +148,7 @@ class _searchPlaceInfoState extends State<searchPlaceInfo> {
                         ),
                       ),
                       const SizedBox(height: 10.0),
-                      
+
                       const SizedBox(height: 10.0),
                       Padding(
                         padding: const EdgeInsets.only(left: 6.0, bottom: 4.0),
@@ -431,8 +419,8 @@ class BorderedContainer extends StatelessWidget {
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 28.0),
                   ),
-                 // if (child != null) ...[const SizedBox(height: 10.0), child]
-                 SizedBox(height: 10.0),
+                  // if (child != null) ...[const SizedBox(height: 10.0), child]
+                  SizedBox(height: 10.0),
                 ],
               ),
       ),

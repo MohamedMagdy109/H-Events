@@ -1,5 +1,3 @@
-
-
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,39 +23,40 @@ class speaker_Requests extends StatefulWidget {
       docID,
       speaker,
       userID,
-      owner ;
+      owner;
 
   bool favo, join;
 
   var color;
   String stat;
-  
-  speaker_Requests({
-    this.photo,
-    this.title,
-    this.address,
-    this.capacity,
-    this.desciption,
-    this.place,
-    this.date,
-    this.status,
-    this.docID,
-    this.favo,
-    this.join,
-    this.color,
-    this.userID,
-    this.stat,
-    this.speaker,
-    this.owner 
-  });
+
+  speaker_Requests(
+      {this.photo,
+      this.title,
+      this.address,
+      this.capacity,
+      this.desciption,
+      this.place,
+      this.date,
+      this.status,
+      this.docID,
+      this.favo,
+      this.join,
+      this.color,
+      this.userID,
+      this.stat,
+      this.speaker,
+      this.owner});
   @override
   _speaker_RequestsState createState() => _speaker_RequestsState();
 }
-enum Answers{Close}
+
+enum Answers { Close }
+
 class _speaker_RequestsState extends State<speaker_Requests> {
   static final String path = "lib/src/pages/bike/bike_details.dart";
   final TextStyle bold = TextStyle(fontWeight: FontWeight.bold);
-  
+
   FirebaseUser user;
   Future<void> getUser() async {
     FirebaseUser userData = await FirebaseAuth.instance.currentUser();
@@ -66,13 +65,15 @@ class _speaker_RequestsState extends State<speaker_Requests> {
       print(user.uid);
     });
   }
- ////////////////////////////////////////////////////////////////////////////favorite
+
+  ////////////////////////////////////////////////////////////////////////////favorite
   bool fav;
   var my_color_variable;
-  String id,duID;
-  
+  String id, duID;
+
   f() async {
-     var data = await Firestore.instance.collection('favorite').document(duID).get();
+    var data =
+        await Firestore.instance.collection('favorite').document(duID).get();
 
     if (data.exists) {
       setState(() {
@@ -86,101 +87,88 @@ class _speaker_RequestsState extends State<speaker_Requests> {
       });
     }
   }
-  
-  
-  
- //////////////////////////////////////////////////////////////////////////////////
- ///
- //////////////////////////////////////////////////////////////////////////////////join event
+
+  //////////////////////////////////////////////////////////////////////////////////
+  ///
+  //////////////////////////////////////////////////////////////////////////////////join event
   bool join;
-  var my_color_variable_join=Colors.green;
-  var join_text=Text("AGREE");
+  var my_color_variable_join = Colors.green;
+  var join_text = Text("AGREE");
   //String id,duID;
   var join_icon = Icon(Icons.check);
   j() async {
-     var data = await Firestore.instance.collection('join_event_speaker').document(duID).get();
+    var data = await Firestore.instance
+        .collection('join_event_speaker')
+        .document(duID)
+        .get();
 
     if (data.exists) {
       setState(() {
         my_color_variable_join = Colors.red;
         join = true;
-        join_text=Text("you are the speaker of this Event");
-        join_icon= Icon(Icons.work);
+        join_text = Text("you are the speaker of this Event");
+        join_icon = Icon(Icons.work);
       });
     } else {
       setState(() {
         my_color_variable_join = Colors.green;
         join = false;
-        join_text=Text("AGREE");
-        join_icon= Icon(Icons.check);
+        join_text = Text("AGREE");
+        join_icon = Icon(Icons.check);
       });
     }
   }
-  
-  
-
-
 
   String _value = '';
 
   void _setValue(String value) => setState(() => _value = value);
 
   Future _askUser() async {
-    
-    switch(
-      await showDialog(
-        context: context,
-        child: new SimpleDialog(
-          title: new Text("Your request has been succecfully"),
-          children: <Widget>[
-            new SimpleDialogOption(
-              child: new Text("Close"),
-              onPressed: (){
-                Navigator.pop(context, Answers.Close);
-              },
+    switch (await showDialog(
+        builder: (context) => new SimpleDialog(
+              title: new Text("Your request has been succecfully"),
+              children: <Widget>[
+                new SimpleDialogOption(
+                  child: new Text("Close"),
+                  onPressed: () {
+                    Navigator.pop(context, Answers.Close);
+                  },
+                ),
+              ],
             ),
-           
-          ],
-        )
-      )
-    ) {
+        context: context)) {
       case Answers.Close:
         _setValue('ok');
         break;
-    
     }
   }
+
   Future _askUserno() async {
-    
-    switch(
-      await showDialog(
-        context: context,
-        child: new SimpleDialog(
-          title: new Text("you are the speaker of this Event"),
-          children: <Widget>[
-            new SimpleDialogOption(
-              child: new Text("Close"),
-              onPressed: (){
-                Navigator.pop(context, Answers.Close);
-              },
+    switch (await showDialog(
+        builder: (context) => new SimpleDialog(
+              title: new Text("you are the speaker of this Event"),
+              children: <Widget>[
+                new SimpleDialogOption(
+                  child: new Text("Close"),
+                  onPressed: () {
+                    Navigator.pop(context, Answers.Close);
+                  },
+                ),
+              ],
             ),
-           
-          ],
-        )
-      )
-    ) {
+        context: context)) {
       case Answers.Close:
         _setValue('ok');
         break;
-    
     }
   }
-  
-  
-  
+
   join_event() {
     if (join == false) {
-      Firestore.instance.collection('join_event_speaker').document(duID).setData({
+      Firestore.instance
+          .collection('join_event_speaker')
+          .document(duID)
+          .setData({
         'photo': widget.photo,
         'title': widget.title,
         'address': widget.address,
@@ -191,51 +179,50 @@ class _speaker_RequestsState extends State<speaker_Requests> {
         'place': widget.place,
         'user': user.uid,
         'eventID': widget.docID,
-        'owner' : widget.owner
+        'owner': widget.owner
       });
-     /* Toast.show("added", context,
+      /* Toast.show("added", context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);*/
-          _askUser();
+      _askUser();
       setState(() {
         join = true;
         my_color_variable_join = Colors.pink;
-        join_text=Text("you are the speaker of this Event");
-        join_icon= Icon(Icons.work);
+        join_text = Text("you are the speaker of this Event");
+        join_icon = Icon(Icons.work);
       });
     } else {
-     // Firestore.instance.collection("join_event_speaker").document(duID).delete();
-           _askUserno();
-      
+      // Firestore.instance.collection("join_event_speaker").document(duID).delete();
+      _askUserno();
+
       setState(() {
         join = false;
         my_color_variable_join = Colors.green;
-        join_text=Text("AGREE");
-        join_icon= Icon(Icons.add);
+        join_text = Text("AGREE");
+        join_icon = Icon(Icons.add);
       });
     }
   }
+
 //////////////////////////////////////////////////////////////////////////////////
   @override
- initState() {
+  initState() {
     super.initState();
     getUser();
     print(widget.docID);
-    duID= widget.docID+widget.userID;
+    duID = widget.docID + widget.userID;
     f();
-    if(widget.favo == true){
-    j();
-    }else{
+    if (widget.favo == true) {
+      j();
+    } else {
       setState(() {
-       // join = false;
+        // join = false;
         my_color_variable_join = Colors.red;
-        join_text=Text("not avalible");
-        join_icon= Icon(Icons.not_interested);
+        join_text = Text("not avalible");
+        join_icon = Icon(Icons.not_interested);
       });
     }
     print(widget.stat);
-    
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -281,7 +268,6 @@ class _speaker_RequestsState extends State<speaker_Requests> {
                             //   widget.favo = false;
                             // });
                             // }
-                            
                           },
                           child: Container(
                             height: 40.0,
@@ -604,8 +590,8 @@ class _speaker_RequestsState extends State<speaker_Requests> {
               icon: join_icon,
               label: join_text,
               onPressed: () {
-                if(widget.favo == true){
-                join_event();
+                if (widget.favo == true) {
+                  join_event();
                 }
               },
             ),

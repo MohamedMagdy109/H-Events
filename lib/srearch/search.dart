@@ -26,7 +26,7 @@ class _searchPageState extends State<searchPage> {
 
   String c = "";
 
- FirebaseUser user;
+  FirebaseUser user;
   Future<void> getUser() async {
     FirebaseUser userData = await FirebaseAuth.instance.currentUser();
     setState(() {
@@ -38,10 +38,9 @@ class _searchPageState extends State<searchPage> {
   @override
   void initState() {
     super.initState();
-    
+
     getUser();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -101,12 +100,14 @@ class _searchPageState extends State<searchPage> {
                   padding: EdgeInsets.all(10),
                   child: InkWell(
                     onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => speakerProfilec(id: document['id'],)),
-                          );
-                        },
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => speakerProfilec(
+                                  id: document['id'],
+                                )),
+                      );
+                    },
                     child: Card(
                       color: Colors.white,
                       elevation: 20,
@@ -221,37 +222,39 @@ class _searchPageState extends State<searchPage> {
                   snapshot.data.documents.map((DocumentSnapshot document) {
                 return InkWell(
                     onTap: () {
-                       var now = new DateTime.now();
-                        var avalible ;
-                        bool av;
-                       // DateTime dob = DateTime.parse('2021-10-12');
-                       var parsedDate = DateTime.parse(document['date']);
-                        int difference = now.difference(parsedDate).inHours;
-                        print(difference);
-                        if(difference < 1){
+                      var now = new DateTime.now();
+                      var avalible;
+                      bool av;
+                      // DateTime dob = DateTime.parse('2021-10-12');
+                      var parsedDate = DateTime.parse(document['date']);
+                      int difference = now.difference(parsedDate).inHours;
+                      print(difference);
+                      if (difference < 1) {
                         setState(() {
-                          avalible = "avalible";//Text('avalible',style: TextStyle(color: Colors.green),);
+                          avalible =
+                              "avalible"; //Text('avalible',style: TextStyle(color: Colors.green),);
                           av = true;
                         });
-                        }else{
+                      } else {
                         setState(() {
-                          avalible = "not avalible";//Text('not avalible',style: TextStyle(color: Colors.red),);
+                          avalible =
+                              "not avalible"; //Text('not avalible',style: TextStyle(color: Colors.red),);
                           av = false;
                         });
-                        }
+                      }
                       Navigator.of(context)
                           .push(new MaterialPageRoute(builder: (context) {
                         return new moreExplore(
                           photo: document["image"], title: document["name"],
-                            address: document["address"],
-                            desciption: document["decription"],
-                            capacity: document["capacity"],
-                            place: document["place"],
-                            date: document["date"],
-                         //   speaker: document["speaker"],
-                            // status: document["status"],
-                            docID: document.documentID, userID: user.uid,
-                            stat: avalible,favo: av,
+                          address: document["address"],
+                          desciption: document["decription"],
+                          capacity: document["capacity"],
+                          place: document["place"],
+                          date: document["date"],
+                          //   speaker: document["speaker"],
+                          // status: document["status"],
+                          docID: document.documentID, userID: user.uid,
+                          stat: avalible, favo: av,
                         );
                       }));
                     },
